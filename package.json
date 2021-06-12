@@ -1,0 +1,11 @@
+{
+  "name": "eloquentjs_exercises",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:FernanEd/eloquentjs_exercises.git",
+  "author": "fernaned <fernandoed.bm@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^27.0.4"
+  }
+}
