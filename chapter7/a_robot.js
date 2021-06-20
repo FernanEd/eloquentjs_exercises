@@ -226,7 +226,7 @@ function compareRobots(robot1, memory1, robot2, memory2) {
 	let tests = 0;
 	let robot1Scores = [];
 	let robot2Scores = [];
-	while (tests < 100) {
+	while (tests < 10000) {
 		state = VillageState.random();
 		robot1Scores.push(checkRobot(state, robot1, memory1));
 		robot2Scores.push(checkRobot(state, robot2, memory2));
@@ -239,4 +239,34 @@ function compareRobots(robot1, memory1, robot2, memory2) {
   `);
 }
 
-compareRobots(ferBot, undefined, goalOrientedRobot, []);
+// compareRobots(ferBot, undefined, randomRobot, []);
+// compareRobots(ferBot, undefined, routeRobot, []);
+// compareRobots(ferBot, undefined, goalOrientedRobot, []);
+
+function superDuperRobot({ place, parcels }, route) {
+	if (route.length == 0) {
+		let pickUpRoutes = [];
+		let deliveryRoutes = [];
+
+		for (const parcel of parcels) {
+			if (parcel.place != place) {
+				pickUpRoutes.push(findRoute(roadGraph, place, parcel.place));
+			} else {
+				deliveryRoutes.push(findRoute(roadGraph, place, parcel.address));
+			}
+		}
+
+		pickUpRoutes.sort((a, b) => {
+			return a.length - b.length;
+		});
+
+		deliveryRoutes.sort((a, b) => {
+			return a.length - b.length;
+		});
+
+		route = pickUpRoutes.length == 0 ? deliveryRoutes[0] : pickUpRoutes[0];
+	}
+	return { direction: route[0], memory: route.slice(1) };
+}
+
+compareRobots(ferBot, undefined, superDuperRobot, []);
