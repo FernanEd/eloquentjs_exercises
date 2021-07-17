@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			.particle {
+				position: absolute;
+				width: 16px;
+				height: 16px;
+				border-radius: 50%;
+			}
+		</style>
+	</head>
+	<body>
+		<script>
+			window.addEventListener('mousemove', handleMouseMove);
+
+			let lastCoords;
+
+			let scheduled = null;
+			function handleMouseMove(e) {
+				if (!scheduled) {
+					setTimeout(() => {
+						if (lastCoords) {
+							paintTrail(lastCoords, { x: e.clientX, y: e.clientY });
+						}
+						lastCoords = { x: e.clientX, y: e.clientY };
+						scheduled = null;
+					}, 20);
+				}
+				scheduled = event;
+			}
+
+			function paintTrail(from, to) {
+				let dif = Math.hypot(from.x, from.y) - Math.hypot(to.x, to.y);
+				dif = Math.abs(dif) | 0;
+				let xdif = to.x - from.x;
+				let ydif = to.y - from.y;
+				let step = 10;
+
+				for (let i = 0; i < dif; i += step) {
+					const p = document.createElement('div');
+					p.classList.add('particle');
+					p.style.left = from.x + (xdif / dif) * i + 'px';
+					p.style.top = from.y + (ydif / dif) * i + 'px';
+					p.style.backgroundColor = `hsl(${Math.random() * 255},100%,30%)`;
+					document.body.appendChild(p);
+					setTimeout(() => {
+						document.body.removeChild(p);
+					}, 300);
+				}
+			}
+		</script>
+	</body>
+</html>
