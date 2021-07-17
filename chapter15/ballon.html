@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			body {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: 100vh;
+				min-width: 100vw;
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<p>🎈</p>
+	</body>
+
+	<script>
+		const ballon = document.querySelector('p');
+		let size = 64;
+		changeSize(size);
+		window.addEventListener('keydown', handleBallon);
+
+		function handleBallon(e) {
+			if (e.key == 'ArrowUp') {
+				e.preventDefault();
+				grow();
+			} else if (e.key == 'ArrowDown') {
+				e.preventDefault();
+				shrink();
+			}
+		}
+
+		function grow(e) {
+			if (size < 256) {
+				changeSize(size * 1.1);
+			} else {
+				ballon.textContent = '💥';
+				window.removeEventListener('keydown', handleBallon);
+			}
+		}
+
+		function shrink(e) {
+			if (size > 32) {
+				changeSize(size * 0.9);
+			}
+		}
+
+		function changeSize(newSize) {
+			size = newSize;
+			ballon.style.fontSize = size + 'px';
+		}
+	</script>
+</html>
