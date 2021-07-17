@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<tab-panel>
+			<div data-tabname="one">Tab one</div>
+			<div data-tabname="two">Tab two</div>
+			<div data-tabname="three">Tab three</div>
+		</tab-panel>
+		<script>
+			function asTabs(node) {
+				const contents = node.querySelectorAll('div[data-tabname]');
+				const names = [...contents].map((t) => t.getAttribute('data-tabname'));
+
+				//Close all tabs except the first one
+				contents.forEach((c, i) => (c.style.display = 'none'));
+
+				let lastTab;
+
+				const selectTab = (currentTab) => {
+					if (lastTab) {
+						contents[lastTab.i].style.display = 'none';
+						lastTab.tab.disabled = false;
+					}
+					contents[currentTab.i].style.display = 'initial';
+					currentTab.tab.disabled = true;
+					lastTab = currentTab;
+				};
+
+				const nav = document.createElement('nav');
+
+				names.forEach((name, i) => {
+					const tab = document.createElement('button');
+					tab.textContent = name;
+					tab.addEventListener('click', (e) => {
+						selectTab({ i, tab });
+					});
+					//Start clicked if first
+					if (i == 0) {
+						tab.click();
+					}
+					nav.appendChild(tab);
+				});
+
+				document.body.prepend(nav);
+			}
+			asTabs(document.querySelector('tab-panel'));
+		</script>
+	</body>
+</html>
